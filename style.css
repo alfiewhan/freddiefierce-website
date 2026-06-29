@@ -11,11 +11,11 @@ body {
 .monitor {
   width: 100vw;
   height: 100vh;
-  padding: clamp(25px, 5vw, 70px);
+  padding: clamp(14px, 3vw, 38px);
   background:
     radial-gradient(circle at center, rgba(30,120,255,.18), transparent 45%),
     linear-gradient(#02070d, #000);
-  border: 18px solid #050505;
+  border: 12px solid #050505;
   box-shadow:
     inset 0 0 100px #000,
     inset 0 0 35px #1e7fff,
@@ -81,24 +81,25 @@ header {
 }
 
 .logo {
-  width: min(460px, 68vw);
-  margin: 55px 0 20px;
+  width: min(320px, 46vw);
+  max-height: 28vh;
+  object-fit: contain;
+  margin: 22px 0 10px;
   filter:
     brightness(1.35)
     contrast(1.25)
     drop-shadow(0 0 25px #4ea1ff);
   animation: logoGlow 2.5s infinite alternate;
-}
 
 h2 {
-  font-size: clamp(17px, 2vw, 28px);
+  font-size: clamp(14px, 1.6vw, 22px);
   letter-spacing: 2px;
-  margin-bottom: 25px;
+  margin: 8px 0 14px;
 }
 
 .lines {
   width: min(760px, 90vw);
-  font-size: clamp(14px, 1.8vw, 22px);
+  font-size: clamp(12px, 1.45vw, 18px);
 }
 
 .line {
@@ -114,11 +115,8 @@ h2 {
 }
 
 .progress {
-  width: min(760px, 90vw);
-  height: 24px;
-  border: 1px solid #6bb6ff;
-  margin-top: 22px;
-  padding: 3px;
+  margin-top: 14px;
+  height: 20px;
 }
 
 #bar {
@@ -139,7 +137,7 @@ h2 {
 }
 
 .enter {
-  margin-top: 30px;
+  margin-top: 16px;
 }
 
 .clock {
