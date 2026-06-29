@@ -122,25 +122,47 @@ startBtn.addEventListener("click", () => {
 });
 
 enterBtn.addEventListener("click", () => {
-    clickSound();
-    staticBurst();
+  clickSound();
+  staticBurst();
 
-    document.body.innerHTML = `
-        <div id="comingScreen">
+  document.body.innerHTML = `
+    <div style="
+      position:fixed;
+      inset:0;
+      background:#000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    ">
+      <img 
+        src="coming-soon.png?v=999"
+        alt="Come Back Soon"
+        style="
+          width:auto !important;
+          height:auto !important;
+          max-width:62vw !important;
+          max-height:62vh !important;
+          object-fit:contain !important;
+          display:block !important;
+        "
+      >
 
-            <img
-                src="coming-soon.png"
-                id="comingImage"
-                alt="Coming Soon">
-
-            <div id="scanlines"></div>
-
-        </div>
-    `;
-});
-
-document.addEventListener("mouseover", e => {
-  if (e.target.tagName === "BUTTON" && audio) {
-    beep(900, 0.025, "square", 0.018);
-  }
+      <div style="
+        position:fixed;
+        inset:0;
+        pointer-events:none;
+        z-index:9999;
+        background:repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.12) 0px,
+          rgba(255,255,255,0.12) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+        opacity:.55;
+        animation:scanlinesMove .35s linear infinite;
+      "></div>
+    </div>
+  `;
 });
