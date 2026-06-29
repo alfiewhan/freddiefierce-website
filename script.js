@@ -122,16 +122,21 @@ startBtn.addEventListener("click", () => {
 });
 
 enterBtn.addEventListener("click", () => {
-  clickSound();
-  staticBurst();
+    clickSound();
+    staticBurst();
 
-  document.body.innerHTML = `
-    <main class="final-screen">
-      <div class="final-art"></div>
-      <div class="final-scanlines"></div>
-      <div class="final-vignette"></div>
-    </main>
-  `;
+    document.body.innerHTML = `
+        <div id="comingScreen">
+
+            <img
+                src="coming-soon.png"
+                id="comingImage"
+                alt="Coming Soon">
+
+            <div id="scanlines"></div>
+
+        </div>
+    `;
 });
 
 document.addEventListener("mouseover", e => {
