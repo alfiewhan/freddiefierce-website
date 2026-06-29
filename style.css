@@ -185,3 +185,64 @@ h2 {
   from { transform: scale(1); opacity: .88; }
   to { transform: scale(1.025); opacity: 1; }
 }
+
+.coming-soon {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.coming-logo {
+  width: min(720px, 88vw);
+  filter:
+    brightness(1.45)
+    contrast(1.3)
+    drop-shadow(0 0 18px #2f8dff)
+    drop-shadow(0 0 55px #005dff);
+  animation: floatLogo 4s ease-in-out infinite, logoShimmer 2.8s ease-in-out infinite;
+}
+
+.coming-text {
+  margin-top: 34px;
+  color: #9ccaff;
+  font-family: "Courier New", monospace;
+  font-size: clamp(18px, 3vw, 38px);
+  letter-spacing: 5px;
+  text-shadow:
+    0 0 8px #2f8dff,
+    0 0 20px #2f8dff;
+}
+
+.coming-text strong {
+  margin: 0 18px;
+}
+
+@keyframes floatLogo {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-14px) scale(1.025);
+  }
+}
+
+@keyframes logoShimmer {
+  0%, 100% {
+    filter:
+      brightness(1.25)
+      contrast(1.25)
+      drop-shadow(0 0 18px #2f8dff)
+      drop-shadow(0 0 45px #005dff);
+  }
+  50% {
+    filter:
+      brightness(1.7)
+      contrast(1.45)
+      drop-shadow(0 0 28px #6bb6ff)
+      drop-shadow(0 0 75px #2f8dff);
+  }
+}
