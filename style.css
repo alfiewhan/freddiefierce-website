@@ -344,3 +344,60 @@ h2 {
   0%, 100% { opacity: 0.42; }
   50% { opacity: 0.62; }
 }
+
+#comingScreen{
+    position:fixed;
+    inset:0;
+    background:#000;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    overflow:hidden;
+}
+
+#comingImage{
+
+    width:90vw;
+    height:90vh;
+
+    object-fit:contain;
+
+    display:block;
+
+    image-rendering:auto;
+}
+
+#scanlines{
+
+    position:absolute;
+    inset:0;
+
+    pointer-events:none;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,.08) 0px,
+            rgba(255,255,255,.08) 2px,
+            transparent 2px,
+            transparent 4px
+        );
+
+    animation:scanlines .18s linear infinite;
+
+    opacity:.45;
+}
+
+@keyframes scanlines{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(4px);
+    }
+
+}
