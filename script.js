@@ -116,14 +116,19 @@ document.addEventListener("mouseover", e => {
 
 enterBtn.onclick = () => {
   clickSound();
+  staticBurst();
+
   document.body.innerHTML = `
-    <main class="monitor">
-      <section class="start">
-        <img src="logo.png" class="logo" alt="Freddie Fierce Logo">
-        <h1>FREDDIE FIERCE</h1>
-        <p>HARD HOUSE • PRODUCER • DJ</p>
-      </section>
+    <main class="coming-soon">
+      <img src="logo.png" class="coming-logo" alt="Freddie Fierce Logo">
+
+      <div class="coming-text">
+        <span>----</span>
+        <strong>COME BACK SOON</strong>
+        <span>----</span>
+      </div>
     </main>
+
     <div class="crt"></div>
     <div class="vignette"></div>
   `;
