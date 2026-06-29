@@ -53,15 +53,17 @@ const bootLines = [
   "SIGNAL LOCKED"
 ];
 
-startBtn.onclick = () => {
-  initAudio();
+enterBtn.onclick = () => {
   clickSound();
+  staticBurst();
 
-  start.classList.add("hidden");
-  boot.classList.remove("hidden");
-
-  setTimeout(dialup, 350);
-  runBoot();
+  document.body.innerHTML = `
+    <main class="final-screen">
+      <img src="coming-soon.png" class="final-image" alt="Come Back Soon">
+      <div class="final-scanlines"></div>
+      <div class="final-vignette"></div>
+    </main>
+  `;
 };
 
 function runBoot() {
