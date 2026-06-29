@@ -1,0 +1,152 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #000;
+  color: #168bff;
+  font-family: "Courier New", monospace;
+  overflow: hidden;
+}
+
+.crt {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.04),
+      rgba(255,255,255,0.04) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  animation: flicker 0.12s infinite;
+  z-index: 10;
+}
+
+.boot-screen {
+  min-height: 100vh;
+  border: 2px solid #006dff;
+  padding: 18px;
+  text-shadow: 0 0 8px #168bff;
+}
+
+.window-bar {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #006dff;
+  padding-bottom: 12px;
+  font-size: 22px;
+  letter-spacing: 2px;
+}
+
+.loading-box {
+  text-align: center;
+  margin-top: 70px;
+}
+
+h1 {
+  font-size: 64px;
+  letter-spacing: 8px;
+  animation: pulse 1s infinite;
+}
+
+.logo-placeholder {
+  margin: 30px auto;
+  width: 220px;
+  height: 220px;
+  border: 3px solid #168bff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 80px;
+  font-weight: bold;
+  box-shadow: 0 0 35px #168bff;
+  animation: spin 3s linear infinite;
+}
+
+.status {
+  font-size: 22px;
+  letter-spacing: 3px;
+}
+
+.progress-frame {
+  width: 520px;
+  max-width: 90%;
+  height: 34px;
+  border: 2px solid #168bff;
+  margin: 30px auto;
+  padding: 4px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: repeating-linear-gradient(
+    to right,
+    #168bff 0,
+    #168bff 18px,
+    transparent 18px,
+    transparent 26px
+  );
+  animation: load 5s forwards;
+}
+
+.terminal {
+  border: 1px solid #168bff;
+  width: 520px;
+  max-width: 90%;
+  margin: 30px auto;
+  padding: 18px;
+  text-align: left;
+  font-size: 18px;
+}
+
+button {
+  background: #000;
+  color: #168bff;
+  border: 2px solid #168bff;
+  padding: 16px 34px;
+  font-size: 22px;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 0 20px #168bff;
+}
+
+button:hover {
+  background: #168bff;
+  color: #000;
+}
+
+.hidden {
+  display: none;
+}
+
+footer {
+  position: fixed;
+  bottom: 16px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+}
+
+@keyframes load {
+  to { width: 100%; }
+}
+
+@keyframes spin {
+  to { transform: rotateY(360deg); }
+}
+
+@keyframes pulse {
+  50% { opacity: 0.55; }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.28; }
+}
