@@ -1,141 +1,130 @@
+const start = document.getElementById("start");
+const boot = document.getElementById("boot");
 const startBtn = document.getElementById("startBtn");
 const enterBtn = document.getElementById("enterBtn");
-const startScreen = document.getElementById("startScreen");
-const bootScreen = document.getElementById("bootScreen");
-const homeScreen = document.getElementById("homeScreen");
-const bootLines = document.getElementById("bootLines");
+const linesBox = document.getElementById("lines");
 const bar = document.getElementById("bar");
 const percent = document.getElementById("percent");
-const connected = document.getElementById("connected");
 
-let audioCtx;
+let audio;
 
-function audioStart() {
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function initAudio() {
+  audio = new (window.AudioContext || window.webkitAudioContext)();
 }
 
-function beep(freq = 600, duration = 0.08, type = "square", volume = 0.05) {
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-
-  osc.type = type;
+function beep(freq, time = 0.06, type = "square", vol = 0.035) {
+  const osc = audio.createOscillator();
+  const gain = audio.createGain();
   osc.frequency.value = freq;
-  gain.gain.value = volume;
-
+  osc.type = type;
+  gain.gain.value = vol;
   osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
+  gain.connect(audio.destination);
   osc.start();
-  osc.stop(audioCtx.currentTime + duration);
+  osc.stop(audio.currentTime + time);
 }
 
-function dialUpBurst() {
-  let t = 0;
-  const notes = [1200, 900, 1500, 700, 1800, 1000, 2400, 1300, 600, 2100];
+function clickSound() {
+  beep(90, .045, "square", .07);
+  setTimeout(() => beep(250, .035, "triangle", .04), 45);
+}
 
-  notes.forEach((note, i) => {
-    setTimeout(() => beep(note, 0.055, "square", 0.035), t);
-    t += 80 + Math.random() * 80;
+function dialup() {
+  const notes = [1200, 800, 1600, 600, 2100, 900, 2400, 1300, 700, 1800];
+  notes.forEach((n, i) => {
+    setTimeout(() => beep(n, .05, "square", .03), i * 90);
   });
 }
 
-function staticCrackle() {
-  for (let i = 0; i < 12; i++) {
-    setTimeout(() => beep(200 + Math.random() * 3000, 0.025, "sawtooth", 0.018), i * 35);
+function staticBurst() {
+  for (let i = 0; i < 14; i++) {
+    setTimeout(() => beep(200 + Math.random() * 2800, .025, "sawtooth", .018), i * 28);
   }
 }
 
-function heavyClick() {
-  beep(90, 0.05, "square", 0.08);
-  setTimeout(() => beep(260, 0.035, "triangle", 0.05), 45);
-}
-
-function successSound() {
-  beep(520, 0.08, "square", 0.05);
-  setTimeout(() => beep(760, 0.08, "square", 0.05), 110);
-  setTimeout(() => beep(1040, 0.12, "square", 0.05), 220);
-}
-
-const lines = [
-  "INITIALISING SYSTEM",
+const bootLines = [
   "LOADING WHITE LABEL ARCHIVE",
   "CALIBRATING AUDIO ENGINE",
-  "SYNCHRONISING UNDERGROUND NETWORK",
   "LOCATING DANCEFLOOR",
-  "CHECKING BASSLINE SIGNAL",
+  "CONNECTING PIRATE FREQUENCY",
+  "BUILDING KICK DRUM CACHE",
   "ARMING HOOVER MODULE",
-  "CONNECTION STABLE"
+  "CHECKING BASSLINE SIGNAL",
+  "SIGNAL LOCKED"
 ];
 
-startBtn.addEventListener("click", () => {
-  audioStart();
-  heavyClick();
-  setTimeout(dialUpBurst, 300);
+startBtn.onclick = () => {
+  initAudio();
+  clickSound();
 
-  startScreen.classList.add("hidden");
-  bootScreen.classList.remove("hidden");
+  start.classList.add("hidden");
+  boot.classList.remove("hidden");
 
+  setTimeout(dialup, 350);
   runBoot();
-});
+};
 
 function runBoot() {
+  let i = 0;
   let progress = 0;
-  let lineIndex = 0;
 
   const lineTimer = setInterval(() => {
-    if (lineIndex < lines.length) {
-      const row = document.createElement("div");
-      row.className = "boot-line";
-      row.innerHTML = `<span>&gt; ${lines[lineIndex]}...</span><span>[OK]</span>`;
-      bootLines.appendChild(row);
-
-      beep(420 + lineIndex * 70, 0.055, "square", 0.035);
-
-      if (lineIndex === 3) staticCrackle();
-      if (lineIndex === 5) dialUpBurst();
-
-      lineIndex++;
-    } else {
+    if (i >= bootLines.length) {
       clearInterval(lineTimer);
+      return;
     }
-  }, 620);
 
-  const progressTimer = setInterval(() => {
-    progress += Math.random() * 8;
+    const row = document.createElement("div");
+    row.className = "line";
+    row.innerHTML = `<span>&gt; ${bootLines[i]}</span><strong>[OK]</strong>`;
+    linesBox.appendChild(row);
 
-    if (progress > 99 && progress < 100) {
-      progress = 99;
-    }
+    beep(420 + i * 70, .045);
+
+    if (i === 3) staticBurst();
+    if (i === 5) dialup();
+
+    i++;
+  }, 520);
+
+  const barTimer = setInterval(() => {
+    progress += Math.random() * 7.5;
 
     if (progress >= 100) {
       progress = 100;
-      clearInterval(progressTimer);
+      clearInterval(barTimer);
 
       setTimeout(() => {
-        connected.classList.remove("hidden");
-        successSound();
-      }, 600);
+        staticBurst();
+        beep(520, .08);
+        setTimeout(() => beep(760, .08), 120);
+        setTimeout(() => beep(1040, .12), 240);
+        enterBtn.classList.remove("hidden");
+      }, 650);
     }
 
     bar.style.width = progress + "%";
     percent.textContent = Math.floor(progress) + "%";
-  }, 220);
+  }, 190);
 }
 
-document.addEventListener("mouseover", (e) => {
-  if (e.target.classList.contains("big-button") || e.target.classList.contains("menu-button")) {
-    if (audioCtx) beep(880, 0.035, "square", 0.025);
+document.addEventListener("mouseover", e => {
+  if (e.target.tagName === "BUTTON" && audio) {
+    beep(900, .025, "square", .018);
   }
 });
 
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("big-button") || e.target.classList.contains("menu-button")) {
-    if (audioCtx) heavyClick();
-  }
-});
-
-enterBtn.addEventListener("click", () => {
-  bootScreen.classList.add("hidden");
-  homeScreen.classList.remove("hidden");
-  staticCrackle();
-});
+enterBtn.onclick = () => {
+  clickSound();
+  document.body.innerHTML = `
+    <main class="monitor">
+      <section class="start">
+        <img src="logo.png" class="logo" alt="Freddie Fierce Logo">
+        <h1>FREDDIE FIERCE</h1>
+        <p>HARD HOUSE • PRODUCER • DJ</p>
+      </section>
+    </main>
+    <div class="crt"></div>
+    <div class="vignette"></div>
+  `;
+};
