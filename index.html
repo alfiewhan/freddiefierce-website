@@ -7,64 +7,39 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="crt"></div>
+  <div class="vignette"></div>
 
-  <div class="crt-overlay"></div>
-  <div class="noise"></div>
-
-  <main class="screen">
-
-    <section id="startScreen" class="start-screen">
+  <main class="monitor">
+    <section id="start" class="start">
       <h1>FREDDIE FIERCE NETWORK OS</h1>
       <p>v2.003</p>
-      <button id="startBtn" class="big-button">INITIALISE NETWORK</button>
-      <p class="small">audio system requires user input</p>
+      <button id="startBtn">INITIALISE NETWORK</button>
+      <small>click to enable audio system</small>
     </section>
 
-    <section id="bootScreen" class="boot-screen hidden">
-      <div class="top-row">
-        <div>
-          <p>FREDDIE FIERCE NETWORK OS v2.003</p>
-          <p>(C) 1998-2003 FREDDIE FIERCE NETWORK</p>
-          <p>ALL RIGHTS RESERVED.</p>
-        </div>
-        <div class="right">
-          <p>SYSTEM ID: FF-UNDERGROUND</p>
-          <p>BOOT SEQUENCE INITIATED</p>
-        </div>
+    <section id="boot" class="boot hidden">
+      <header>
+        <span>FREDDIE FIERCE NETWORK OS v2.003</span>
+        <span>BOOT SEQUENCE INITIATED</span>
+      </header>
+
+      <img src="logo.png" class="logo" alt="Freddie Fierce Logo">
+
+      <h2>INITIALISING UNDERGROUND PROTOCOLS...</h2>
+
+      <div id="lines" class="lines"></div>
+
+      <div class="progress">
+        <div id="bar"></div>
       </div>
 
-      <img src="logo.jpg" class="logo" alt="Freddie Fierce logo" />
+      <div id="percent">0%</div>
 
-      <p class="status">INITIALISING UNDERGROUND PROTOCOLS...</p>
+      <button id="enterBtn" class="enter hidden">ENTER THE UNDERGROUND</button>
 
-      <div class="boot-lines" id="bootLines"></div>
-
-      <div class="bar-wrap">
-        <div id="bar" class="bar"></div>
-      </div>
-
-      <p id="percent">0%</p>
-
-      <div id="connected" class="connected hidden">
-        <p>CONNECTED</p>
-        <button id="enterBtn" class="big-button">ENTER THE UNDERGROUND</button>
-      </div>
-
-      <div class="terminal">C:\FFNETWORK\><span class="cursor">_</span></div>
+      <div class="clock">00:00:08:48</div>
     </section>
-
-    <section id="homeScreen" class="home-screen hidden">
-      <h1>FREDDIE FIERCE</h1>
-      <p>HARD HOUSE • PRODUCER • DJ</p>
-
-      <div class="menu">
-        <a href="#" class="menu-button">MUSIC ARCHIVE</a>
-        <a href="#" class="menu-button">BUY TUNES</a>
-        <a href="#" class="menu-button">ABOUT</a>
-        <a href="#" class="menu-button">CONTACT</a>
-      </div>
-    </section>
-
   </main>
 
   <script src="script.js"></script>
