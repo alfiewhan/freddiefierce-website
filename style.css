@@ -345,52 +345,41 @@ h2 {
   50% { opacity: 0.62; }
 }
 
-#comingScreen{
-    position:fixed;
-    inset:0;
-    background:#000;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
-    overflow:hidden;
+#comingScreen {
+  position: fixed !important;
+  inset: 0 !important;
+  background: #000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
 }
 
-#comingImage{
-    max-width:70vw;
-    max-height:70vh;
+#comingImage {
+  width: 70vw !important;
+  height: auto !important;
+  max-height: 70vh !important;
+  object-fit: contain !important;
+  display: block !important;
 }
 
-#scanlines{
-
-    position:absolute;
-    inset:0;
-
-    pointer-events:none;
-
-    background:
-        repeating-linear-gradient(
-            to bottom,
-            rgba(255,255,255,.08) 0px,
-            rgba(255,255,255,.08) 2px,
-            transparent 2px,
-            transparent 4px
-        );
-
-    animation:scanlines .18s linear infinite;
-
-    opacity:.45;
+#scanlines {
+  position: fixed !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 999 !important;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.12) 0px,
+    rgba(255,255,255,0.12) 1px,
+    transparent 1px,
+    transparent 4px
+  ) !important;
+  opacity: 0.55 !important;
+  animation: scanlinesMove 0.35s linear infinite !important;
 }
 
-@keyframes scanlines{
-
-    from{
-        transform:translateY(0);
-    }
-
-    to{
-        transform:translateY(4px);
-    }
-
+@keyframes scanlinesMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(4px); }
 }
