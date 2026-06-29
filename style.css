@@ -293,3 +293,56 @@ h2 {
   0%, 100% { opacity: 0.32; }
   50% { opacity: 0.48; }
 }
+
+.final-screen {
+  position: fixed !important;
+  inset: 0 !important;
+  background: #000 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.final-image {
+  width: 92vw !important;
+  height: 92vh !important;
+  object-fit: contain !important;
+  display: block !important;
+  margin: auto !important;
+}
+
+.final-scanlines {
+  position: fixed !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 10 !important;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.16) 0px,
+    rgba(255,255,255,0.16) 1px,
+    transparent 1px,
+    transparent 4px
+  ) !important;
+  opacity: 0.5 !important;
+  mix-blend-mode: overlay !important;
+  animation: scanMove 0.35s linear infinite, scanFlicker 0.12s infinite !important;
+}
+
+.final-vignette {
+  position: fixed !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+  z-index: 11 !important;
+  background: radial-gradient(circle at center, transparent 48%, rgba(0,0,0,0.82) 100%) !important;
+}
+
+@keyframes scanMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(4px); }
+}
+
+@keyframes scanFlicker {
+  0%, 100% { opacity: 0.42; }
+  50% { opacity: 0.62; }
+}
