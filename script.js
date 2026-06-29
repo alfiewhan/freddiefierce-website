@@ -53,18 +53,20 @@ const bootLines = [
   "SIGNAL LOCKED"
 ];
 
-enterBtn.onclick = () => {
-  clickSound();
-  staticBurst();
+if (enterBtn) {
+  enterBtn.addEventListener("click", () => {
+    clickSound();
+    staticBurst();
 
-  document.body.innerHTML = `
-    <main class="final-screen">
-      <img src="coming-soon.png" class="final-image" alt="Come Back Soon">
-      <div class="final-scanlines"></div>
-      <div class="final-vignette"></div>
-    </main>
-  `;
-};
+    document.body.innerHTML = `
+      <main class="final-screen">
+        <img src="coming-soon.png" class="final-image" alt="Come Back Soon">
+        <div class="final-scanlines"></div>
+        <div class="final-vignette"></div>
+      </main>
+    `;
+  });
+}
 
 function runBoot() {
   let i = 0;
