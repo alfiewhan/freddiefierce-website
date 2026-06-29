@@ -249,44 +249,47 @@ h2 {
   inset: 0;
   background: #000;
   overflow: hidden;
+  display: grid;
+  place-items: center;
 }
 
 .final-image {
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   display: block;
+  transform: scale(0.92);
 }
 
 .final-scanlines {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.08),
-      rgba(255,255,255,0.08) 1px,
-      transparent 1px,
-      transparent 4px
-    );
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.10) 0px,
+    rgba(255,255,255,0.10) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  opacity: 0.38;
   mix-blend-mode: overlay;
-  opacity: 0.45;
-  animation: scanlineFlicker 0.12s infinite;
+  animation: scanMove 0.45s linear infinite, scanFlicker 0.12s infinite;
 }
 
 .final-vignette {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(circle at center, transparent 45%, rgba(0,0,0,0.75) 100%);
+  background: radial-gradient(circle at center, transparent 50%, rgba(0,0,0,0.82) 100%);
 }
 
-@keyframes scanlineFlicker {
-  0%, 100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 0.55;
-  }
+@keyframes scanMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(4px); }
+}
+
+@keyframes scanFlicker {
+  0%, 100% { opacity: 0.32; }
+  50% { opacity: 0.48; }
 }
