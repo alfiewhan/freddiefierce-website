@@ -132,10 +132,38 @@ enterBtn.addEventListener("click", () => {
   staticBurst();
 
   document.body.innerHTML = `
-    <main class="final-screen">
-      <img src="coming-soon.png" class="final-image" alt="Come Back Soon">
-      <div class="final-scanlines"></div>
-      <div class="final-vignette"></div>
-    </main>
+  <main style="
+    position:fixed;
+    inset:0;
+    background:#000;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  ">
+    <img src="coming-soon.png" alt="Come Back Soon" style="
+      width:90vw;
+      height:90vh;
+      object-fit:contain;
+      display:block;
+    ">
+
+    <div style="
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.16) 0px,
+        rgba(255,255,255,0.16) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      mix-blend-mode:overlay;
+      opacity:.55;
+      animation:scanMove .35s linear infinite;
+    "></div>
+  </main>
+`;
   `;
 });
