@@ -148,6 +148,26 @@ enterBtn.addEventListener("click", () => {
         "
       >
 
+      <a
+        href="https://soundcloud.com/freddiefierce"
+        target="_blank"
+        style="
+          position:absolute;
+          bottom:35px;
+          left:50%;
+          transform:translateX(-50%);
+          color:#7fc8ff;
+          font-family:'Courier New', monospace;
+          font-size:22px;
+          text-decoration:none;
+          animation:pulseLink 1.8s infinite;
+          text-shadow:0 0 8px #00bfff;
+          z-index:10000;
+        "
+      >
+        ► CONNECT TO SOUNDCLOUD ◄
+      </a>
+
       <div style="
         position:fixed;
         inset:0;
