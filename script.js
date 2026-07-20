@@ -8,8 +8,44 @@ const percent = document.getElementById("percent");
 
 let audio;
 
+const enterSound = new Audio("sounds/long hoover.wav");
+enterSound.volume = 1;
+
 function initAudio() {
   audio = new (window.AudioContext || window.webkitAudioContext)();
+}
+
+function fadeIn(sound, duration = 1200) {
+  sound.volume = 0;
+  sound.play();
+
+  const step = 50;
+  const amount = step / duration;
+
+  const fade = setInterval(() => {
+    if (sound.volume < 1 - amount) {
+      sound.volume += amount;
+    } else {
+      sound.volume = 1;
+      clearInterval(fade);
+    }
+  }, step);
+}
+
+function fadeOut(sound, duration = 1000) {
+  const step = 50;
+  const amount = step / duration;
+
+  const fade = setInterval(() => {
+    if (sound.volume > amount) {
+      sound.volume -= amount;
+    } else {
+      sound.volume = 0;
+      sound.pause();
+      sound.currentTime = 0;
+      clearInterval(fade);
+    }
+  }, step);
 }
 
 function beep(freq, time = 0.06, type = "square", vol = 0.035) {
@@ -122,67 +158,15 @@ startBtn.addEventListener("click", () => {
 });
 
 enterBtn.addEventListener("click", () => {
-  clickSound();
+  enterSound.currentTime = 0;
+  fadeIn(enterSound, 1200);
   staticBurst();
 
-  document.body.innerHTML = `
-    <div style="
-      position:fixed;
-      inset:0;
-      background:#000;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-    ">
-      <img 
-        src="coming-soon.png?v=999"
-        alt="Come Back Soon"
-        style="
-          width:auto !important;
-          height:auto !important;
-          max-width:62vw !important;
-          max-height:62vh !important;
-          object-fit:contain !important;
-          display:block !important;
-        "
-      >
+  setTimeout(() => {
+    fadeOut(enterSound, 1000);
+  }, 3000);
 
-      <a
-        href="https://soundcloud.com/freddiefierce"
-        target="_blank"
-        style="
-          position:absolute;
-          bottom:35px;
-          left:50%;
-          transform:translateX(-50%);
-          color:#7fc8ff;
-          font-family:'Courier New', monospace;
-          font-size:22px;
-          text-decoration:none;
-          animation:pulseLink 1.8s infinite;
-          text-shadow:0 0 8px #00bfff;
-          z-index:10000;
-        "
-      >
-        ► CONNECT TO SOUNDCLOUD ◄
-      </a>
-
-      <div style="
-        position:fixed;
-        inset:0;
-        pointer-events:none;
-        z-index:9999;
-        background:repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,0.12) 0px,
-          rgba(255,255,255,0.12) 1px,
-          transparent 1px,
-          transparent 4px
-        );
-        opacity:.55;
-        animation:scanlinesMove .35s linear infinite;
-      "></div>
-    </div>
-  `;
+ setTimeout(() => {
+  window.location.href = "music.html";
+}, 4200);
 });
