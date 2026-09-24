@@ -1,172 +1,527 @@
-const start = document.getElementById("start");
-const boot = document.getElementById("boot");
-const startBtn = document.getElementById("startBtn");
-const enterBtn = document.getElementById("enterBtn");
-const linesBox = document.getElementById("lines");
-const bar = document.getElementById("bar");
-const percent = document.getElementById("percent");
+const canvas = document.getElementById("particleCanvas");
+const ctx = canvas.getContext("2d");
 
-let audio;
+const introText = document.getElementById("introText");
 
-const enterSound = new Audio("sounds/long hoover.wav");
-enterSound.volume = 1;
+const logo = new Image();
 
-function initAudio() {
-  audio = new (window.AudioContext || window.webkitAudioContext)();
-}
+logo.src = "assets/images/websitelogo.png";
 
-function fadeIn(sound, duration = 1200) {
-  sound.volume = 0;
-  sound.play();
 
-  const step = 50;
-  const amount = step / duration;
+/* ==================================================
+   SETTINGS
+================================================== */
 
-  const fade = setInterval(() => {
-    if (sound.volume < 1 - amount) {
-      sound.volume += amount;
-    } else {
-      sound.volume = 1;
-      clearInterval(fade);
+const settings = {
+
+    // Distance between sampled pixels in the logo.
+    // Lower = more particles / more detail.
+    sampleGap: 7,
+
+    // Size of each square.
+    particleSize: 2.2,
+
+    // Maximum width of assembled logo.
+    logoWidth: 760,
+
+    // How quickly particles move toward the logo.
+    attraction: 0.055,
+
+    // Slows particles as they approach their target.
+    friction: 0.86,
+
+    // Initial scatter distance.
+    scatter: 1.25,
+
+    // Random movement while floating.
+    drift: 0.12,
+
+    // Delay before assembly begins.
+    assemblyDelay: 1200
+
+};
+
+
+let particles = [];
+
+let assembling = false;
+let animationStarted = false;
+
+
+/* ==================================================
+   PARTICLE
+================================================== */
+
+class Particle {
+
+    constructor(targetX, targetY) {
+
+        this.targetX = targetX;
+        this.targetY = targetY;
+
+        /*
+        Start particles scattered around and
+        beyond the edges of the screen.
+        */
+
+        const side = Math.floor(Math.random() * 4);
+
+        if (side === 0) {
+
+            this.x = Math.random() * canvas.width;
+            this.y = -Math.random() * canvas.height * 0.4;
+
+        }
+
+        else if (side === 1) {
+
+            this.x =
+                canvas.width +
+                Math.random() * canvas.width * 0.4;
+
+            this.y = Math.random() * canvas.height;
+
+        }
+
+        else if (side === 2) {
+
+            this.x = Math.random() * canvas.width;
+
+            this.y =
+                canvas.height +
+                Math.random() * canvas.height * 0.4;
+
+        }
+
+        else {
+
+            this.x =
+                -Math.random() * canvas.width * 0.4;
+
+            this.y = Math.random() * canvas.height;
+
+        }
+
+
+        this.vx = (Math.random() - 0.5) * 2;
+        this.vy = (Math.random() - 0.5) * 2;
+
+        this.size =
+            settings.particleSize +
+            Math.random() * 1.8;
+
+        this.alpha =
+            0.25 +
+            Math.random() * 0.75;
+
+        this.rotation =
+            Math.random() * Math.PI;
+
+        this.rotationSpeed =
+            (Math.random() - 0.5) * 0.06;
     }
-  }, step);
-}
 
-function fadeOut(sound, duration = 1000) {
-  const step = 50;
-  const amount = step / duration;
 
-  const fade = setInterval(() => {
-    if (sound.volume > amount) {
-      sound.volume -= amount;
-    } else {
-      sound.volume = 0;
-      sound.pause();
-      sound.currentTime = 0;
-      clearInterval(fade);
+    update() {
+
+        if (assembling) {
+
+            const dx =
+                this.targetX - this.x;
+
+            const dy =
+                this.targetY - this.y;
+
+
+            this.vx +=
+                dx * settings.attraction;
+
+            this.vy +=
+                dy * settings.attraction;
+
+
+            this.vx *=
+                settings.friction;
+
+            this.vy *=
+                settings.friction;
+
+        }
+
+        else {
+
+            /*
+            Slight floating movement before
+            the particles assemble.
+            */
+
+            this.vx +=
+                (Math.random() - 0.5) *
+                settings.drift;
+
+            this.vy +=
+                (Math.random() - 0.5) *
+                settings.drift;
+
+
+            this.vx *= 0.98;
+            this.vy *= 0.98;
+
+        }
+
+
+        this.x += this.vx;
+        this.y += this.vy;
+
+        this.rotation +=
+            this.rotationSpeed;
+
     }
-  }, step);
+
+
+    draw() {
+
+        ctx.save();
+
+        ctx.translate(
+            this.x,
+            this.y
+        );
+
+        ctx.rotate(
+            this.rotation
+        );
+
+
+        /*
+        Slightly warm white rather than
+        completely sterile digital white.
+        */
+
+        ctx.fillStyle =
+            `rgba(235,235,230,${this.alpha})`;
+
+
+        ctx.fillRect(
+            -this.size / 2,
+            -this.size / 2,
+            this.size,
+            this.size
+        );
+
+
+        ctx.restore();
+
+    }
+
 }
 
-function beep(freq, time = 0.06, type = "square", vol = 0.035) {
-  if (!audio) return;
 
-  const osc = audio.createOscillator();
-  const gain = audio.createGain();
+/* ==================================================
+   CANVAS
+================================================== */
 
-  osc.frequency.value = freq;
-  osc.type = type;
-  gain.gain.value = vol;
+function resizeCanvas() {
 
-  osc.connect(gain);
-  gain.connect(audio.destination);
+    canvas.width =
+        window.innerWidth *
+        window.devicePixelRatio;
 
-  osc.start();
-  osc.stop(audio.currentTime + time);
+    canvas.height =
+        window.innerHeight *
+        window.devicePixelRatio;
+
+
+    canvas.style.width =
+        window.innerWidth + "px";
+
+    canvas.style.height =
+        window.innerHeight + "px";
+
+
+    /*
+    Recreate particles whenever dimensions change.
+    */
+
+    if (logo.complete && logo.naturalWidth) {
+
+        createLogoParticles();
+
+    }
+
 }
 
-function clickSound() {
-  beep(90, 0.045, "square", 0.07);
-  setTimeout(() => beep(250, 0.035, "triangle", 0.04), 45);
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+
+/* ==================================================
+   READ LOGO
+================================================== */
+
+function createLogoParticles() {
+
+    particles = [];
+
+
+    /*
+    Temporary canvas used purely to read
+    the PNG's visible pixels.
+    */
+
+    const tempCanvas =
+        document.createElement("canvas");
+
+    const tempCtx =
+        tempCanvas.getContext("2d");
+
+
+    const maxWidth =
+        Math.min(
+            settings.logoWidth,
+            window.innerWidth * 0.72
+        );
+
+
+    const scale =
+        maxWidth / logo.naturalWidth;
+
+
+    const logoWidth =
+        logo.naturalWidth * scale;
+
+    const logoHeight =
+        logo.naturalHeight * scale;
+
+
+    tempCanvas.width =
+        Math.round(logoWidth);
+
+    tempCanvas.height =
+        Math.round(logoHeight);
+
+
+    tempCtx.drawImage(
+        logo,
+        0,
+        0,
+        tempCanvas.width,
+        tempCanvas.height
+    );
+
+
+    const imageData =
+        tempCtx.getImageData(
+            0,
+            0,
+            tempCanvas.width,
+            tempCanvas.height
+        );
+
+
+    const data =
+        imageData.data;
+
+
+    /*
+    Centre logo on main canvas.
+    */
+
+    const offsetX =
+        canvas.width / 2 -
+        (tempCanvas.width *
+        window.devicePixelRatio) / 2;
+
+
+    const offsetY =
+        canvas.height / 2 -
+        (tempCanvas.height *
+        window.devicePixelRatio) / 2;
+
+
+    /*
+    Sample the PNG.
+    */
+
+    for (
+        let y = 0;
+        y < tempCanvas.height;
+        y += settings.sampleGap
+    ) {
+
+        for (
+            let x = 0;
+            x < tempCanvas.width;
+            x += settings.sampleGap
+        ) {
+
+
+            const index =
+                (y * tempCanvas.width + x) * 4;
+
+
+            const red =
+                data[index];
+
+            const green =
+                data[index + 1];
+
+            const blue =
+                data[index + 2];
+
+            const alpha =
+                data[index + 3];
+
+
+            /*
+            Ignore transparent pixels.
+
+            We also ignore very dark pixels,
+            which helps us primarily capture
+            the silver/white logo.
+            */
+
+            const brightness =
+                (red + green + blue) / 3;
+
+
+            if (
+                alpha > 80 &&
+                brightness > 75
+            ) {
+
+                const targetX =
+                    offsetX +
+                    x * window.devicePixelRatio;
+
+
+                const targetY =
+                    offsetY +
+                    y * window.devicePixelRatio;
+
+
+                particles.push(
+                    new Particle(
+                        targetX,
+                        targetY
+                    )
+                );
+
+            }
+
+        }
+
+    }
+
+
+    console.log(
+        "Fierce particles:",
+        particles.length
+    );
+
 }
 
-function dialup() {
-  const notes = [1200, 800, 1600, 600, 2100, 900, 2400, 1300, 700, 1800];
 
-  notes.forEach((n, i) => {
-    setTimeout(() => beep(n, 0.05, "square", 0.03), i * 90);
-  });
+/* ==================================================
+   ANIMATION
+================================================== */
+
+function animate() {
+
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    /*
+    Very subtle glow behind particles.
+    */
+
+    ctx.shadowBlur = 6;
+    ctx.shadowColor =
+        "rgba(255,255,255,0.18)";
+
+
+    for (
+        let i = 0;
+        i < particles.length;
+        i++
+    ) {
+
+        particles[i].update();
+        particles[i].draw();
+
+    }
+
+
+    requestAnimationFrame(
+        animate
+    );
+
 }
 
-function staticBurst() {
-  for (let i = 0; i < 14; i++) {
+
+/* ==================================================
+   START
+================================================== */
+
+logo.onload = function () {
+
+    resizeCanvas();
+
+    createLogoParticles();
+
+    animate();
+
+
+    // Start assembling logo
+
     setTimeout(() => {
-      beep(200 + Math.random() * 2800, 0.025, "sawtooth", 0.018);
-    }, i * 28);
-  }
-}
 
-const bootLines = [
-  "LOADING WEBSITE",
-  "CALIBRATING AUDIO ENGINE",
-  "LOCATING KICK AND BASSLINE",
-  "CONNECTING FREQUENCY",
-  "HARDER SOUNDS LOCATED",
-  "I'LL TAKE YOU THERE, I'LL TAKE YOU THERE",
-  "ALMOST FINISHED",
-  "SIGNAL FOUND"
-];
+        assembling = true;
 
-function runBoot() {
-  let i = 0;
-  let progress = 0;
+    }, settings.assemblyDelay);
 
-  linesBox.innerHTML = "";
-  bar.style.width = "0%";
-  percent.textContent = "0%";
-  enterBtn.classList.add("hidden");
 
-  const lineTimer = setInterval(() => {
-    if (i >= bootLines.length) {
-      clearInterval(lineTimer);
-      return;
-    }
 
-    const row = document.createElement("div");
-    row.className = "line";
-    row.innerHTML = `<span>&gt; ${bootLines[i]}</span><strong>[OK]</strong>`;
-    linesBox.appendChild(row);
+    // Reveal FREDDIE FIERCE
 
-    beep(420 + i * 70, 0.045);
+    setTimeout(() => {
 
-    if (i === 3) staticBurst();
-    if (i === 5) dialup();
+        introText.classList.add(
+            "visible"
+        );
 
-    i++;
-  }, 520);
+    }, settings.assemblyDelay + 2400);
 
-  const barTimer = setInterval(() => {
-    progress += Math.random() * 7.5;
 
-    if (progress >= 100) {
-      progress = 100;
-      clearInterval(barTimer);
 
-      setTimeout(() => {
-        staticBurst();
-        beep(520, 0.08);
-        setTimeout(() => beep(760, 0.08), 120);
-        setTimeout(() => beep(1040, 0.12), 240);
-        enterBtn.classList.remove("hidden");
-      }, 650);
-    }
+    // Fade entire intro away
 
-    bar.style.width = progress + "%";
-    percent.textContent = Math.floor(progress) + "%";
-  }, 190);
-}
+    setTimeout(() => {
 
-startBtn.addEventListener("click", () => {
-  initAudio();
-  clickSound();
+        document
+            .getElementById("intro")
+            .classList.add("fade-out");
 
-  start.classList.add("hidden");
-  boot.classList.remove("hidden");
+    }, settings.assemblyDelay + 5000);
 
-  setTimeout(dialup, 350);
-  runBoot();
-});
 
-enterBtn.addEventListener("click", () => {
-  enterSound.currentTime = 0;
-  fadeIn(enterSound, 1200);
-  staticBurst();
 
-  setTimeout(() => {
-    fadeOut(enterSound, 1000);
-  }, 3000);
+    // Reveal COMING SOON underneath
 
- setTimeout(() => {
-  window.location.href = "music.html";
-}, 4200);
-});
+    setTimeout(() => {
+
+        document
+            .getElementById("comingSoon")
+            .classList.add("visible");
+
+    }, settings.assemblyDelay + 5800);
+
+};
