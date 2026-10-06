@@ -1,0 +1,305 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    min-height: 100%;
+    background: #000;
+}
+
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+}
+
+
+/* =========================
+   PAGE
+========================= */
+
+.bookingPage {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+
+    padding: 70px 30px;
+}
+
+
+.bookingContent {
+    width: 100%;
+    max-width: 560px;
+
+    text-align: center;
+
+    opacity: 0;
+
+    animation: pageAppear 2s ease forwards;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.bookingLogo {
+    width: min(420px, 75vw);
+    height: auto;
+
+    margin-bottom: 55px;
+
+    opacity: 0.9;
+}
+
+
+/* =========================
+   HEADING
+========================= */
+
+.bookingTitle {
+    font-size: 11px;
+
+    letter-spacing: 6px;
+
+    margin-bottom: 25px;
+
+    color: rgba(255, 255, 255, 0.9);
+}
+
+
+.bookingIntro {
+    font-size: 11px;
+
+    line-height: 1.8;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, 0.5);
+
+    margin-bottom: 50px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.bookingForm {
+    width: 100%;
+
+    text-align: left;
+}
+
+
+.formGroup {
+    margin-bottom: 28px;
+}
+
+
+.formGroup label {
+    display: block;
+
+    font-size: 8px;
+
+    letter-spacing: 4px;
+
+    margin-bottom: 10px;
+
+    color: rgba(255, 255, 255, 0.45);
+}
+
+
+.formGroup input,
+.formGroup textarea {
+    width: 100%;
+
+    background: transparent;
+
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.22);
+
+    color: #fff;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 12px;
+
+    letter-spacing: 1px;
+
+    padding: 10px 2px;
+
+    outline: none;
+
+    transition:
+        border-color 0.4s ease,
+        box-shadow 0.4s ease;
+}
+
+
+.formGroup textarea {
+    resize: vertical;
+
+    min-height: 100px;
+}
+
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+    border-color: rgba(255,255,255,0.8);
+
+    box-shadow:
+        0 5px 10px -10px rgba(255,255,255,0.8);
+}
+
+
+/* =========================
+   SEND
+========================= */
+
+.sendButton {
+    display: block;
+
+    margin: 50px auto 0;
+
+    background: transparent;
+
+    border: none;
+
+    color: rgba(255,255,255,0.7);
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 10px;
+
+    letter-spacing: 5px;
+
+    cursor: pointer;
+
+    padding: 12px;
+
+    transition:
+        color 0.3s ease,
+        text-shadow 0.3s ease;
+}
+
+
+.sendButton:hover {
+    color: #fff;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.7),
+        0 0 25px rgba(255,255,255,0.25);
+}
+
+
+/* =========================
+   DIRECT CONTACT
+========================= */
+
+.directContact {
+    margin-top: 65px;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255,255,255,0.3);
+}
+
+
+.directContact span {
+    margin-right: 8px;
+}
+
+
+.directContact a {
+    color: rgba(255,255,255,0.55);
+
+    text-decoration: none;
+
+    transition: color 0.3s ease;
+}
+
+
+.directContact a:hover {
+    color: #fff;
+}
+
+
+/* =========================
+   RETURN
+========================= */
+
+.returnLink {
+    display: inline-block;
+
+    margin-top: 50px;
+
+    color: rgba(255,255,255,0.3);
+
+    font-size: 9px;
+
+    letter-spacing: 4px;
+
+    text-decoration: none;
+
+    transition:
+        color 0.4s ease,
+        text-shadow 0.4s ease;
+}
+
+
+.returnLink:hover {
+    color: #fff;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.5);
+}
+
+
+/* =========================
+   ENTRANCE
+========================= */
+
+@keyframes pageAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .bookingPage {
+        padding: 45px 25px;
+    }
+
+    .bookingLogo {
+        width: 75vw;
+        margin-bottom: 45px;
+    }
+
+    .bookingTitle {
+        font-size: 10px;
+        letter-spacing: 4px;
+    }
+
+}

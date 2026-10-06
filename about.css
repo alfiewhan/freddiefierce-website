@@ -1,0 +1,172 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    min-height: 100%;
+    background: #000;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+}
+
+
+/* =========================
+   PAGE
+========================= */
+
+.aboutPage {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 60px 30px;
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.aboutContent {
+    width: 100%;
+    max-width: 620px;
+
+    text-align: center;
+
+    opacity: 0;
+
+    animation: pageAppear 2.5s ease forwards;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.aboutLogo {
+    width: min(420px, 75vw);
+    height: auto;
+
+    margin-bottom: 65px;
+
+    opacity: 0.9;
+}
+
+
+/* =========================
+   TEXT
+========================= */
+
+.aboutText {
+    font-size: 12px;
+    line-height: 2;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.aboutText p {
+    margin-bottom: 28px;
+}
+
+.smallTitle {
+    font-size: 10px;
+
+    letter-spacing: 5px;
+
+    color: rgba(255, 255, 255, 0.45);
+
+    margin-bottom: 45px !important;
+}
+
+.statement {
+    margin-top: 50px;
+
+    letter-spacing: 6px;
+
+    color: #fff;
+
+    opacity: 0.9;
+}
+
+
+/* =========================
+   RETURN
+========================= */
+
+.returnLink {
+    display: inline-block;
+
+    margin-top: 45px;
+
+    color: rgba(255, 255, 255, 0.35);
+
+    font-size: 9px;
+
+    letter-spacing: 4px;
+
+    text-decoration: none;
+
+    transition:
+        color 0.4s ease,
+        text-shadow 0.4s ease;
+}
+
+.returnLink:hover {
+    color: #fff;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.5);
+}
+
+
+/* =========================
+   ENTRANCE
+========================= */
+
+@keyframes pageAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .aboutPage {
+        padding: 45px 25px;
+    }
+
+    .aboutLogo {
+        width: 75vw;
+        margin-bottom: 45px;
+    }
+
+    .aboutText {
+        font-size: 11px;
+        line-height: 1.9;
+        letter-spacing: 1.5px;
+    }
+
+}

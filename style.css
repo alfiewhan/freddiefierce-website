@@ -113,10 +113,51 @@ body {
 
 
 /* =========================
+   MAIN MENU
+========================= */
+
+#mainMenu {
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #000;
+
+    opacity: 0;
+
+    transition: opacity 2s ease;
+
+    z-index: 1;
+}
+
+#mainMenu.visible {
+    opacity: 1;
+}
+
+
+/* =========================
+   MENU LINKS
+========================= */
+
+.menuLinks {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 90px;
+}
+
+
+/* =========================
    SPINNING TEXT
 ========================= */
 
 .spinningText {
+    display: inline-block;
+
     color: #fff;
 
     font-family: Arial, Helvetica, sans-serif;
@@ -130,19 +171,79 @@ body {
 
     opacity: 0.8;
 
-    animation:
-        spinText 8s linear infinite;
+    text-decoration: none;
+
+    animation: spinText 8s linear infinite;
+
+    transition:
+        opacity 0.3s ease,
+        text-shadow 0.3s ease;
 }
 
+
+/* Slight glow when mouse is over link */
+
+.spinningText:hover {
+    opacity: 1;
+
+    text-shadow:
+        0 0 8px rgba(255,255,255,0.8),
+        0 0 20px rgba(255,255,255,0.35);
+}
+
+
+/* 3D rotation */
 
 @keyframes spinText {
 
     from {
-        transform: perspective(600px) rotateY(0deg);
+        transform:
+            perspective(600px)
+            rotateY(0deg);
     }
 
     to {
-        transform: perspective(600px) rotateY(360deg);
+        transform:
+            perspective(600px)
+            rotateY(360deg);
     }
 
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+
+    .menuLinks {
+        gap: 30px;
+    }
+
+    .spinningText {
+        font-size: 10px;
+        letter-spacing: 4px;
+    }
+
+}
+
+/* =========================
+   MENU LOGO
+========================= */
+
+.menuContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.menuLogo {
+    width: min(500px, 70vw);
+    height: auto;
+
+    margin-bottom: 55px;
+
+    opacity: 0.9;
 }

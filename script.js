@@ -466,7 +466,6 @@ function animate() {
 
 }
 
-
 /* ==================================================
    START
 ================================================== */
@@ -489,17 +488,13 @@ logo.onload = function () {
     }, settings.assemblyDelay);
 
 
-
     // Reveal FREDDIE FIERCE
 
     setTimeout(() => {
 
-        introText.classList.add(
-            "visible"
-        );
+        introText.classList.add("visible");
 
     }, settings.assemblyDelay + 2400);
-
 
 
     // Fade entire intro away
@@ -513,13 +508,12 @@ logo.onload = function () {
     }, settings.assemblyDelay + 5000);
 
 
-
-    // Reveal COMING SOON underneath
+    // Reveal main menu underneath
 
     setTimeout(() => {
 
         document
-            .getElementById("comingSoon")
+            .getElementById("mainMenu")
             .classList.add("visible");
 
     }, settings.assemblyDelay + 5800);
