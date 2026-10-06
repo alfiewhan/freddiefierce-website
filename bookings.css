@@ -303,3 +303,62 @@ body {
     }
 
 }
+
+/* =========================
+   FORM MESSAGES
+========================= */
+
+.formMessage {
+    display: none;
+
+    margin-top: 35px;
+
+    font-size: 10px;
+    line-height: 1.8;
+
+    letter-spacing: 2px;
+
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
+.formMessage.visible {
+    display: block;
+
+    animation: messageAppear 0.8s ease forwards;
+}
+
+
+.successTitle,
+.errorTitle {
+    margin-bottom: 10px;
+
+    font-size: 11px;
+
+    letter-spacing: 5px;
+
+    color: #fff;
+}
+
+
+@keyframes messageAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* Disabled button while sending */
+
+.sendButton:disabled {
+    cursor: default;
+    opacity: 0.5;
+}

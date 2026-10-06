@@ -38,7 +38,9 @@
         <div class="bookingContent">
 
 
-            <!-- LOGO -->
+            <!-- =========================
+                 LOGO
+            ========================== -->
 
             <img
                 src="assets/images/fiercelogo.png"
@@ -47,14 +49,14 @@
             >
 
 
-            <!-- HEADING -->
+            <!-- =========================
+                 HEADING
+            ========================== -->
 
             <p class="bookingTitle">
                 BOOKINGS / ENQUIRIES
             </p>
 
-
-            <!-- INTRO -->
 
             <p class="bookingIntro">
                 For bookings, appearances and event enquiries,
@@ -62,14 +64,19 @@
             </p>
 
 
-            <!-- BOOKING FORM -->
+            <!-- =========================
+                 BOOKING FORM
+            ========================== -->
 
             <form
-    class="bookingForm"
-    id="bookingForm"
-    action="/api/booking"
-    method="POST"
->
+                class="bookingForm"
+                id="bookingForm"
+                action="/api/booking"
+                method="POST"
+            >
+
+
+                <!-- NAME -->
 
                 <div class="formGroup">
 
@@ -87,6 +94,8 @@
                 </div>
 
 
+                <!-- EMAIL -->
+
                 <div class="formGroup">
 
                     <label for="email">
@@ -103,6 +112,8 @@
                 </div>
 
 
+                <!-- EVENT -->
+
                 <div class="formGroup">
 
                     <label for="event">
@@ -117,6 +128,8 @@
 
                 </div>
 
+
+                <!-- DATE -->
 
                 <div class="formGroup">
 
@@ -133,6 +146,8 @@
                 </div>
 
 
+                <!-- LOCATION -->
+
                 <div class="formGroup">
 
                     <label for="location">
@@ -147,6 +162,8 @@
 
                 </div>
 
+
+                <!-- MESSAGE -->
 
                 <div class="formGroup">
 
@@ -164,6 +181,8 @@
                 </div>
 
 
+                <!-- SEND -->
+
                 <button
                     type="submit"
                     class="sendButton"
@@ -171,14 +190,60 @@
                     SEND ENQUIRY
                 </button>
 
+
             </form>
 
 
-            <!-- DIRECT EMAIL -->
+            <!-- =========================
+                 SUCCESS MESSAGE
+            ========================== -->
+
+            <div
+                id="formSuccess"
+                class="formMessage"
+            >
+
+                <p class="successTitle">
+                    ENQUIRY SENT
+                </p>
+
+                <p>
+                    Thank you. Your message has been received.
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 ERROR MESSAGE
+            ========================== -->
+
+            <div
+                id="formError"
+                class="formMessage"
+            >
+
+                <p class="errorTitle">
+                    MESSAGE NOT SENT
+                </p>
+
+                <p>
+                    Please try again or email
+                    bookings@freddiefierce.com directly.
+                </p>
+
+            </div>
+
+
+            <!-- =========================
+                 DIRECT EMAIL
+            ========================== -->
 
             <div class="directContact">
 
-                <span>DIRECT:</span>
+                <span>
+                    DIRECT:
+                </span>
 
                 <a href="mailto:bookings@freddiefierce.com">
                     bookings@freddiefierce.com
@@ -187,7 +252,9 @@
             </div>
 
 
-            <!-- RETURN -->
+            <!-- =========================
+                 RETURN
+            ========================== -->
 
             <a
                 href="index.html"
@@ -200,6 +267,125 @@
         </div>
 
     </main>
+
+
+
+    <!-- =========================
+         BOOKING FORM JAVASCRIPT
+    ========================== -->
+
+    <script>
+
+        const bookingForm =
+            document.getElementById("bookingForm");
+
+        const formSuccess =
+            document.getElementById("formSuccess");
+
+        const formError =
+            document.getElementById("formError");
+
+        const sendButton =
+            bookingForm.querySelector(".sendButton");
+
+
+        bookingForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                // Hide old messages
+
+                formSuccess.classList.remove("visible");
+                formError.classList.remove("visible");
+
+
+                // Prevent double submissions
+
+                sendButton.disabled = true;
+                sendButton.textContent = "SENDING...";
+
+
+                try {
+
+                    const formData =
+                        new FormData(bookingForm);
+
+
+                    const response =
+                        await fetch(
+                            "/api/booking",
+                            {
+                                method: "POST",
+                                body: formData
+                            }
+                        );
+
+
+                    const result =
+                        await response.json();
+
+
+                    if (
+                        !response.ok ||
+                        !result.success
+                    ) {
+
+                        throw new Error(
+                            "Booking enquiry failed"
+                        );
+
+                    }
+
+
+                    // Clear the form
+
+                    bookingForm.reset();
+
+
+                    // Update button
+
+                    sendButton.textContent =
+                        "SENT";
+
+
+                    // Show confirmation
+
+                    formSuccess.classList.add(
+                        "visible"
+                    );
+
+                }
+
+
+                catch (error) {
+
+                    console.error(error);
+
+
+                    // Allow another attempt
+
+                    sendButton.disabled = false;
+
+                    sendButton.textContent =
+                        "SEND ENQUIRY";
+
+
+                    // Show error
+
+                    formError.classList.add(
+                        "visible"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
 
 </body>
 
